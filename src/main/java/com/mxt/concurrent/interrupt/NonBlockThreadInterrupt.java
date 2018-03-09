@@ -3,6 +3,13 @@ package com.mxt.concurrent.interrupt;
 /**
  * Created by mxt on 18-3-8.
  * 非阻塞线程中断
+ * 参考文章
+ *  http://blog.csdn.net/canot/article/details/51087772 理解java线程的中断
+ *  总结
+ *  1、调用线程的interrupt方法，并不能真正中断线程，只是给线程做了中断状态的标志
+ *  2、Thread.interrupted()：测试当前线程是否处于中断状态。执行后将中断状态标志为false
+ *  3、Thread.isInterrupte()： 测试线程Thread对象是否已经处于中断状态。但不具有清除功能
+ *
  */
 public class NonBlockThreadInterrupt {
     public static void main(String[] args) {

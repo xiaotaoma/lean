@@ -19,6 +19,10 @@ public class BinaryThreeNode<T extends Comparable> {
         this.rightChild = rightChild;
     }
 
+    public BinaryThreeNode(T data) {
+        this.data = data;
+    }
+
     public T getData() {
         return data;
     }
@@ -51,5 +55,16 @@ public class BinaryThreeNode<T extends Comparable> {
         this.rightChild = rightChild;
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("BinaryThreeNode{");
+        stringBuilder.append(data);
+        stringBuilder.append(", parent=");
+        if (parent != null && parent.data != null) {
+            stringBuilder.append(parent.data.toString());
+        }
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
 }

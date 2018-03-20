@@ -11,6 +11,11 @@ package com.mxt.tree;
      哈夫曼树
      堆
      红黑树
+     
+     
+     
+     
+     
  */
 public class TreeNode {
     private Object data;//存储的数据

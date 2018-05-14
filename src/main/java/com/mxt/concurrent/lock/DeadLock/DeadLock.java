@@ -1,4 +1,4 @@
-package com.mxt.concurrent.block;
+package com.mxt.concurrent.lock.DeadLock;
 
 /**
  *

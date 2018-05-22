@@ -1,5 +1,9 @@
 package com.mxt.tree.binaryTree;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Created by mxt on 18-3-9.
  * 二叉查找树 Binary Sort Tree
@@ -128,6 +132,71 @@ public class BinarySearchTree {
     }
 
     /**
+     * 二叉查找树的删除
+     * 1、删除的节点没有左子树和右子树，直接删除
+     * 2、删除的节点有左子树或右子树，将节点的左子树或右子树指向父节点
+     * 3、删除的节点有左子树和右子树，搜索节点下边的最小节点，放入删除节点的位置
+     * @param root
+     * @param
+     */
+    private static BinaryThreeNode deleteNode(BinaryThreeNode root, BinaryThreeNode delete) {
+        if (delete == null) {
+            return root;
+        }
+        BinaryThreeNode leftChild = delete.getLeftChild();
+        BinaryThreeNode rightChild = delete.getRightChild();
+        BinaryThreeNode parent = delete.getParent();
+        if (leftChild == null && rightChild == null) {
+            //删除的节点没有左子树和右子树，直接删除
+            if (parent.getLeftChild() == delete) {
+                //删除节点是父节点的左孩子，父节点设置左孩子为null，删除
+                parent.setLeftChild(null);
+            }else if (parent.getRightChild() == delete) {
+                //删除节点是父节点的右孩子，父节点设置右孩子为null，删除
+                parent.setRightChild(null);
+            }
+        }else if (leftChild == null && rightChild != null) {
+            //删除节点有右子树，无左子树，将右孩子指向父节点
+            rightChild.setParent(parent);
+            if (delete == parent.getLeftChild()) {
+                //删除节点是父节点的左孩子，
+                parent.setLeftChild(rightChild);
+            }else if (delete == parent.getRightChild()) {
+                //删除节点是父节点的右孩子，
+                parent.setRightChild(rightChild);
+            }
+        }else if (rightChild == null && leftChild != null) {
+            //删除节点有左子树，无右子树，将左孩子指向父节点
+            leftChild.setParent(parent);
+            if (delete == parent.getLeftChild()) {
+                parent.setLeftChild(leftChild);
+            }else if (delete == parent.getRightChild()) {
+                parent.setRightChild(leftChild);
+            }
+        }else {
+            //删除节点有左子树和右子树，查找最小节点
+            BinaryThreeNode min = getMin(delete);
+
+            BinaryThreeNode parent1 = min.getParent();
+            if (min == parent1.getLeftChild()) {
+                parent1.setLeftChild(null);
+            }else if (min == parent1.getRightChild()) {
+                parent1.setRightChild(null);
+            }
+
+            min.setParent(parent);
+            if (delete == parent.getRightChild()) {
+                parent.setRightChild(min);
+            }else if (delete == parent.getLeftChild()) {
+                parent.setLeftChild(min);
+            }
+            min.setLeftChild(leftChild);
+            min.setRightChild(rightChild);
+        }
+        return root;
+    }
+
+    /**
      * 查询最小节点
      * @param binaryThreeNode
      * @return
@@ -189,7 +258,7 @@ public class BinarySearchTree {
     }
 
     public static void main(String[] args) {
-        BinaryThreeNode<Integer> root = new BinaryThreeNode<Integer>(1);
+        /*BinaryThreeNode<Integer> root = new BinaryThreeNode<Integer>(1);
         BinaryThreeNode<Integer> binaryThreeNode = new BinaryThreeNode<Integer>(8);
         insert(root, binaryThreeNode);
 
@@ -212,21 +281,23 @@ public class BinarySearchTree {
         insert(root, binaryThreeNode6);
 
         BinaryThreeNode<Integer> binaryThreeNode7 = new BinaryThreeNode<Integer>(88);
-        insert(root, binaryThreeNode7);
+        insert(root, binaryThreeNode7);*/
+        Random random = new Random();
+        BinaryThreeNode<Integer> root = new BinaryThreeNode(random.nextInt(100));
 
+        List<BinaryThreeNode> list = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            int i1 = random.nextInt(100);
+            BinaryThreeNode<Integer> node = new BinaryThreeNode(i1);
+            insert(root, node);
+            list.add(node);
+        }
         inOrder(root);
 
-        //root = delete(root, binaryThreeNode1);
-        //inOrder(root);
+        BinaryThreeNode binaryThreeNode = list.get(random.nextInt(list.size()));
+        System.out.println("delete:"+binaryThreeNode);
+        BinaryThreeNode delete = deleteNode(root, binaryThreeNode);
 
-        System.out.println("min:" + root.getData() + ":" + getMin(root));
-        System.out.println("min:" + binaryThreeNode.getData() + ":" + getMin(binaryThreeNode));
-        System.out.println("min:" + binaryThreeNode1.getData() + ":" + getMin(binaryThreeNode1));
-        System.out.println("min:" + binaryThreeNode2.getData() + ":" + getMin(binaryThreeNode2));
-        System.out.println("min:" + binaryThreeNode3.getData() + ":" + getMin(binaryThreeNode3));
-        System.out.println("min:" + binaryThreeNode4.getData() + ":" + getMin(binaryThreeNode4));
-        System.out.println("min:" + binaryThreeNode5.getData() + ":" + getMin(binaryThreeNode5));
-        System.out.println("min:" + binaryThreeNode6.getData() + ":" + getMin(binaryThreeNode6));
-        System.out.println("min:" + binaryThreeNode7.getData() + ":" + getMin(binaryThreeNode7));
+        inOrder(delete);
     }
 }

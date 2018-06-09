@@ -1,4 +1,4 @@
-package com.mxt.concurrent.executor;
+package com.mxt.concurrent.threadPool;
 
 import java.util.concurrent.*;
 
@@ -75,12 +75,29 @@ public class ExecutorTest {
         threadPoolExecutor.shutdown();
     }
 
+    private static class myTask implements Runnable {
+        private String name;
 
+        public myTask(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+            System.out.println(name + ",执行");
+            while (true) {
+                //do something
+                int n = 8 * 8;
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
     }
 
+    public static void testWorkQueue() {
 
+    }
 
 }

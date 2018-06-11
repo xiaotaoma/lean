@@ -44,20 +44,39 @@ public class CallableTest {
         executorService.submit(futureTask);
         executorService.shutdown();
 
+        /*try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
+        System.out.println("主线程执行");
+
+        try {
+            Integer integer = futureTask.get(100, TimeUnit.MILLISECONDS);
+            System.out.println("子线程结果，" + integer);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("主线程执行");
-
         try {
-            Integer integer = futureTask.get();
+            Integer integer = futureTask.get(100, TimeUnit.MILLISECONDS);
             System.out.println("子线程结果，" + integer);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
 
@@ -69,11 +88,14 @@ public class CallableTest {
         @Override
         public Object call() throws Exception {
             System.out.println("子线程正在计算");
-            Thread.sleep(10000);
+            Thread.sleep(200);
+            long a= System.nanoTime();
             int sum = 0;
             for (int i = 0; i < 10000; i++) {
                 sum+=i;
             }
+            long b= System.nanoTime();
+            System.out.println("sum cost:" + (b-a));
             return sum;
         }
     }
